@@ -1,0 +1,261 @@
+# ============================================================
+# 人間ロボットゲーム カード定義ファイル
+# ============================================================
+#
+# カードを追加・変更するにはこのファイルを編集してください。
+#
+# 各カードの書式:
+#   - text1: "上段テキスト"
+#     text2: "下段テキスト"
+#     icon: アイコン名 (arrow_up, turn_right, turn_left, turn_back,
+#                       treasure, loop_start, loop_end, point,
+#                       variable_step, condition)
+#     category: カテゴリ名 (move, turn, action, loop, point, condition)
+#     count: 枚数
+#
+# 新しい難易度を追加するには levels: の下に新しいエントリを追加します。
+# ============================================================
+
+# --- 難易度(色)の定義 ---
+levels:
+  blue:
+    label: "きほん"
+    colors:
+      bg: "#E3F2FD"
+      border: "#1565C0"
+      header_bg: "#1565C0"
+      accent: "#1976D2"
+
+  yellow:
+    label: "ちゅうきゅう"
+    colors:
+      bg: "#FFF8E1"
+      border: "#F9A825"
+      header_bg: "#F9A825"
+      accent: "#FBC02D"
+
+  red:
+    label: "上級"
+    colors:
+      bg: "#FFEBEE"
+      border: "#C62828"
+      header_bg: "#C62828"
+      accent: "#D32F2F"
+
+# --- カテゴリバッジの定義 ---
+categories:
+  move:
+    label: "いどう"
+    color: "#4CAF50"
+  turn:
+    label: "ほうこう"
+    color: "#FF9800"
+  action:
+    label: "アクション"
+    color: "#9C27B0"
+  loop:
+    label: "くりかえし"
+    color: "#00BCD4"
+  point:
+    label: "ポイント"
+    color: "#FF5722"
+  condition:
+    label: "じょうけん"
+    color: "#607D8B"
+
+# --- カード定義 ---
+cards:
+  blue:
+    - text1: "1マス"
+      text2: "すすむ"
+      icon: arrow_up
+      category: move
+      count: 3
+
+    - text1: "2マス"
+      text2: "すすむ"
+      icon: arrow_up
+      category: move
+      count: 2
+
+    - text1: "3マス"
+      text2: "すすむ"
+      icon: arrow_up
+      category: move
+      count: 1
+
+    - text1: "みぎを"
+      text2: "むく"
+      icon: turn_right
+      category: turn
+      count: 2
+
+    - text1: "ひだりを"
+      text2: "むく"
+      icon: turn_left
+      category: turn
+      count: 2
+
+    - text1: "うしろを"
+      text2: "むく"
+      icon: turn_back
+      category: turn
+      count: 2
+
+    - text1: "たからばこを"
+      text2: "ひらく"
+      icon: treasure
+      category: action
+      count: 2
+
+  yellow:
+    - text1: "1マス"
+      text2: "すすむ"
+      icon: arrow_up
+      category: move
+      count: 4
+
+    - text1: "2マス"
+      text2: "すすむ"
+      icon: arrow_up
+      category: move
+      count: 2
+
+    - text1: "3マス"
+      text2: "すすむ"
+      icon: arrow_up
+      category: move
+      count: 2
+
+    - text1: "みぎを"
+      text2: "むく"
+      icon: turn_right
+      category: turn
+      count: 2
+
+    - text1: "ひだりを"
+      text2: "むく"
+      icon: turn_left
+      category: turn
+      count: 2
+
+    - text1: "うしろを"
+      text2: "むく"
+      icon: turn_back
+      category: turn
+      count: 2
+
+    - text1: "たからばこを"
+      text2: "ひらく"
+      icon: treasure
+      category: action
+      count: 2
+
+    - text1: "[おわり]まで"
+      text2: "3かい くりかえす"
+      icon: loop_start
+      category: loop
+      count: 1
+
+    - text1: "くりかえし"
+      text2: "おわり"
+      icon: loop_end
+      category: loop
+      count: 1
+
+    - text1: "[マスのすうじ]"
+      text2: "ポイントゲット"
+      icon: point
+      category: point
+      count: 2
+
+  red:
+    - text1: "1マス"
+      text2: "すすむ"
+      icon: arrow_up
+      category: move
+      count: 2
+
+    - text1: "2マス"
+      text2: "すすむ"
+      icon: arrow_up
+      category: move
+      count: 2
+
+    - text1: "みぎを"
+      text2: "むく"
+      icon: turn_right
+      category: turn
+      count: 2
+
+    - text1: "ひだりを"
+      text2: "むく"
+      icon: turn_left
+      category: turn
+      count: 2
+
+    - text1: "うしろを"
+      text2: "むく"
+      icon: turn_back
+      category: turn
+      count: 2
+
+    - text1: "たからばこを"
+      text2: "ひらく"
+      icon: treasure
+      category: action
+      count: 2
+
+    - text1: "[マスのすうじ]"
+      text2: "ポイントゲット"
+      icon: point
+      category: point
+      count: 2
+
+    - text1: "[おわり①]まで"
+      text2: "3かい くりかえす"
+      icon: loop_start
+      category: loop
+      count: 1
+
+    - text1: "くりかえし"
+      text2: "おわり①"
+      icon: loop_end
+      category: loop
+      count: 1
+
+    - text1: "[おわり②]まで"
+      text2: "2かい くりかえす"
+      icon: loop_start
+      category: loop
+      count: 1
+
+    - text1: "くりかえし"
+      text2: "おわり②"
+      icon: loop_end
+      category: loop
+      count: 1
+
+    - text1: "[マスのすうじ]"
+      text2: "マスすすむ"
+      icon: variable_step
+      category: point
+      count: 2
+
+    - text1: "ポイント≧6"
+      text2: "→つぎをじっこう"
+      icon: condition
+      category: condition
+      count: 1
+
+    - text1: "ポイント＜6"
+      text2: "→つぎをじっこう"
+      icon: condition
+      category: condition
+      count: 1
+
+    - text1: "すうじマス？"
+      text2: "→つぎをじっこう"
+      icon: condition
+      category: condition
+      count: 1
