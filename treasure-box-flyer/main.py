@@ -155,9 +155,7 @@ def draw_panel(c, x, y, w, h, no_text):
     c.drawString(banner_x + 28 * mm, banner_y + 4.5 * mm, "たからばこ")
     c.setFillColor(colors.HexColor("#B9D5D8"))
     c.setFont(FONT, 9)
-    c.drawRightString(
-        banner_x + banner_w - 3.0 * mm, banner_y + 6.2 * mm, f"No.{no_text}"
-    )
+    c.drawRightString(banner_x + banner_w - 3.0 * mm, banner_y + 6.2 * mm, f"{no_text}")
 
     cards_gap = 5 * mm
     cards_top = banner_y - 3.5 * mm
