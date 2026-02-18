@@ -44,6 +44,13 @@
 - カスタマイズ: `cards.yaml`（カード文言、難易度色、カテゴリ、枚数、アイコン）
 - 出力: `human_robot_cards.pdf`（トレカサイズ 63x88mm をA4面付け）
 
+### `qr-sheet-generator`
+- 目的: URL一覧からQRコードを生成し、A4 PDFに面付け
+- 実行: `cd qr-sheet-generator && uv sync && uv run generate-qr-sheet`
+- オプション: `-i` 入力YAML / `-o` 出力PDF / `--qr-size-mm` / `--margin-mm` / `--gap-mm` / `--caption`
+- カスタマイズ: `urls.yaml`（文字列URL配列または `{url, label}` 配列）
+- 出力: `qr_sheets.pdf`（収まりきらない場合は自動で複数ページ）
+
 ### `logic-treasure-mission-card`
 - 目的: 人間ロボットゲームのミッションカード（参加者用）と運営用解答集を生成
 - 実行: `cd logic-treasure-mission-card && uv run generate.py`

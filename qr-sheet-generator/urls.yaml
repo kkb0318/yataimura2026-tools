@@ -1,0 +1,13 @@
+urls:
+  - "https://example.com/treasure/1"
+  - "https://example.com/treasure/2"
+  - "https://example.com/treasure/3"
+  - url: "https://example.com/treasure/4"
+    label: "Aチーム"
+  - url: "https://example.com/treasure/5"
+    label: "Bチーム"
+  - url: "https://example.com/treasure/6"
+    label: "Cチーム"
+  - "https://example.com/treasure/7"
+  - "https://example.com/treasure/8"
+  - "https://example.com/treasure/9"
