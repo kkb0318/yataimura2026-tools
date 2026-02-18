@@ -71,7 +71,7 @@ def main() -> None:
         choices=["index", "none"],
         default="index",
         help=(
-            "QR下の表示内容。index: labelがあればlabel、なければ連番 / "
+            "QR下の表示内容。index: 宝探しタグ上にlabel優先で表示、なければ連番 / "
             "none: 表示なし (デフォルト: index)"
         ),
     )
