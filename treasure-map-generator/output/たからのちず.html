@@ -1,0 +1,590 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8">
+<style>/* ============================================================
+ *  たからのちず ─ PDF スタイルシート (WeasyPrint)
+ *  A4: 210mm × 297mm
+ *  半ページカード: 210mm × 148.5mm
+ * ============================================================ */
+
+@font-face {
+  font-family: 'JP';
+  src: local('IPAGothic'),
+       local('IPAPGothic'),
+       local('Noto Sans JP'),
+       local('Noto Sans CJK JP'),
+       local('Hiragino Kaku Gothic Pro');
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+body {
+  font-family: 'JP', 'IPAGothic', 'IPAPGothic', 'Noto Sans JP',
+               'Noto Sans CJK JP', 'Hiragino Kaku Gothic Pro', sans-serif;
+}
+
+/* ── Page container ─────────────────────────────── */
+.page {
+  width: 210mm;
+  height: 297mm;
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+}
+
+/* ── Map card (half / full page) ────────────────── */
+.map-card {
+  position: absolute;
+  left: 0;
+  width: 210mm;
+  height: 148.5mm;
+  overflow: hidden;
+}
+.map-top    { top: 0; }
+.map-bottom { top: 148.5mm; }
+.map-full {
+  position: absolute;
+  top: 0; left: 0;
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+}
+
+/* ── Cut line ───────────────────────────────────── */
+.cut-line {
+  position: absolute;
+  top: 148.5mm;
+  left: 0; right: 0;
+  border-top: 0.3mm dashed rgba(0,0,0,0.2);
+  z-index: 10;
+  height: 0;
+}
+.cut-line::before {
+  content: '\2702';
+  position: absolute;
+  left: 2mm; top: -2.5mm;
+  font-size: 3mm;
+  color: rgba(0,0,0,0.3);
+}
+
+/* ── Parchment background ───────────────────────── */
+.pbg  { position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        background: #F5E6C8; }
+.pe-t { position: absolute; top: 0; left: 0; right: 0; height: 7mm;
+        background: rgba(170,145,100,0.22); }
+.pe-b { position: absolute; bottom: 0; left: 0; right: 0; height: 7mm;
+        background: rgba(170,145,100,0.22); }
+.pe-l { position: absolute; top: 0; left: 0; bottom: 0; width: 5mm;
+        background: rgba(170,145,100,0.18); }
+.pe-r { position: absolute; top: 0; right: 0; bottom: 0; width: 5mm;
+        background: rgba(170,145,100,0.18); }
+
+/* ── Borders ────────────────────────────────────── */
+.bo { position: absolute; top: 3mm; left: 3mm; right: 3mm; bottom: 3mm;
+      border: 0.7mm solid #5B2E1A; }
+.bi-line { position: absolute; top: 5.5mm; left: 5.5mm; right: 5.5mm; bottom: 5.5mm;
+      border: 0.25mm solid #7D4E37; }
+
+/* ── Corner diamonds ────────────────────────────── */
+.cd {
+  position: absolute;
+  width: 4.5mm; height: 4.5mm;
+  background: #C5940A;
+  z-index: 5;
+  transform: rotate(45deg);
+}
+.cd-tl { top: 1mm; left: 1mm; }
+.cd-tr { top: 1mm; right: 1mm; }
+.cd-bl { bottom: 1mm; left: 1mm; }
+.cd-br { bottom: 1mm; right: 1mm; }
+
+/* ── Content area ───────────────────────────────── */
+.ct {
+  position: absolute;
+  top: 7mm; left: 8mm; right: 8mm; bottom: 7mm;
+  z-index: 4;
+}
+
+/* ── Compass ────────────────────────────────────── */
+.compass {
+  position: absolute;
+  top: 0; left: 0;
+  width: 16mm; height: 18mm;
+}
+
+/* ── Map number badge ───────────────────────────── */
+.mno {
+  position: absolute;
+  top: -1mm; right: 0;
+  width: 16mm; height: 16mm;
+  background: #5B2E1A;
+  border-radius: 50%;
+  text-align: center;
+  padding-top: 3mm;
+}
+.mno::after {
+  content: '';
+  position: absolute;
+  top: 1.5mm; left: 1.5mm; right: 1.5mm; bottom: 1.5mm;
+  border: 0.5mm solid #C5940A;
+  border-radius: 50%;
+}
+.mno-l { display: block; color: #FFE4A0; font-size: 2mm; }
+.mno-v { display: block; color: #FFE4A0; font-size: 4mm; font-weight: bold; }
+
+/* ── Banner title ───────────────────────────────── */
+.bw { text-align: center; }
+.bn {
+  display: inline-block;
+  background: #5B2E1A;
+  color: #FFE4A0;
+  font-size: 5.8mm;
+  font-weight: bold;
+  padding: 2mm 12mm;
+  position: relative;
+  letter-spacing: 0.06em;
+}
+.blt, .blb {
+  position: absolute; left: 1.5mm; right: 1.5mm;
+  height: 0; border-top: 0.25mm solid #C5940A;
+}
+.blt { top: 1mm; }
+.blb { bottom: 1mm; }
+.subtitle {
+  text-align: center;
+  color: #5C3D2E;
+  font-size: 2.8mm;
+  margin-top: 1.2mm;
+}
+.stars {
+  text-align: center;
+  margin-top: 1mm;
+}
+.stars span {
+  color: #D4A017;
+  font-size: 4.5mm;
+  margin: 0 0.6mm;
+}
+
+/* ── Divider ────────────────────────────────────── */
+.dv {
+  margin: 1.5mm 0;
+  position: relative;
+  height: 5mm;
+}
+.dvl, .dvr {
+  position: absolute; top: 50%; height: 0;
+  border-top: 0.25mm solid #A67C5B;
+}
+.dvl { left: 0; right: 52%; }
+.dvr { left: 52%; right: 0; }
+.dvd {
+  position: absolute; top: 50%; left: 50%;
+  width: 4mm; height: 4mm;
+  background: #C5940A;
+  transform: translate(-50%,-50%) rotate(45deg);
+}
+
+/* ── Section header ─────────────────────────────── */
+.sh {
+  color: #5B2E1A;
+  font-size: 3.5mm;
+  font-weight: bold;
+  margin-bottom: 1.5mm;
+}
+
+/* ── Special rules box ──────────────────────────── */
+.srb {
+  background: #FFF8E7;
+  border: 0.25mm solid #C9A96E;
+  border-radius: 1.5mm;
+  padding: 2mm 3mm;
+  margin-bottom: 2mm;
+}
+.srh {
+  color: #B33025;
+  font-size: 2.8mm;
+  font-weight: bold;
+  border-bottom: 0.2mm dashed #C9A96E;
+  padding-bottom: 1.2mm;
+  margin-bottom: 1.2mm;
+}
+.srt {
+  color: #3B2312;
+  font-size: 2.7mm;
+  line-height: 1.6;
+}
+
+/* ── Steps ──────────────────────────────────────── */
+.step {
+  color: #3B2312;
+  line-height: 1.55;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.sn {
+  display: inline-block;
+  min-width: 3em;
+  text-align: right;
+  padding-right: 1.2mm;
+  color: #5B2E1A;
+  font-weight: bold;
+}
+.si1 { padding-left: 5mm; }  .si1 .sn { color: #7D4E37; }
+.si2 { padding-left: 10mm; } .si2 .sn { color: #A67C5B; }
+.si3 { padding-left: 15mm; } .si3 .sn { color: #BFA98B; }
+
+/* ── Two-column table ───────────────────────────── */
+.tc    { width: 100%; border-collapse: collapse; }
+.tc td { width: 50%; vertical-align: top; padding: 0; }
+.tc td:last-child {
+  border-left: 0.2mm dashed rgba(120,90,60,0.3);
+  padding-left: 2.5mm;
+}
+
+/* ── Bottom decoration ──────────────────────────── */
+.bdeco {
+  position: absolute;
+  bottom: 7.5mm; left: 0; right: 0;
+  text-align: center;
+  z-index: 4;
+}
+.bdd {
+  display: inline-block;
+  width: 1.6mm; height: 1.6mm;
+  background: rgba(120,90,60,0.3);
+  border-radius: 50%;
+  margin: 0 1mm;
+}
+.bds { width: 1mm; height: 1mm; }
+.bdc {
+  display: inline-block;
+  width: 8mm; height: 5.5mm;
+  background: #8B6914;
+  border-radius: 0.6mm;
+  margin: 0 2mm;
+  vertical-align: middle;
+}
+
+/* ── Code block ─────────────────────────────────── */
+.code-block {
+  background: #1E1E2E;
+  border: 0.5mm solid #5B2E1A;
+  border-radius: 2mm;
+  padding: 3.5mm 4mm;
+  overflow: hidden;
+  position: relative;
+}
+.code-label {
+  position: absolute;
+  top: 0; right: 0;
+  background: #C5940A;
+  color: #1E1E2E;
+  font-size: 2mm;
+  font-weight: bold;
+  padding: 0.6mm 2mm;
+  border-radius: 0 1.5mm 0 1.2mm;
+}
+.code-block pre {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 2.8mm;
+  line-height: 1.75;
+  color: #CDD6F4;
+  white-space: pre;
+  tab-size: 4;
+  margin: 0;
+}
+
+/* Syntax tokens (Catppuccin Mocha) */
+.highlight .k,
+.highlight .kn,
+.highlight .kd  { color: #CBA6F7; }
+.highlight .nf,
+.highlight .nb  { color: #89B4FA; }
+.highlight .s,  .highlight .s1,
+.highlight .s2, .highlight .sd { color: #A6E3A1; }
+.highlight .c,  .highlight .c1,
+.highlight .cm  { color: #6C7086; font-style: italic; }
+.highlight .mi,
+.highlight .mf  { color: #FAB387; }
+.highlight .o,
+.highlight .ow  { color: #89DCEB; }
+.highlight .n   { color: #CDD6F4; }
+.highlight .p   { color: #BAC2DE; }
+.highlight .bp  { color: #F9E2AF; }
+.highlight .linenos { color: #585B70; }
+
+/* ── Answer key ─────────────────────────────────── */
+.ahdr {
+  background: #2C3E50;
+  padding: 7mm 10mm;
+  border-bottom: 0.7mm solid #C5940A;
+  text-align: center;
+}
+.ahdr h1 { color: #fff; font-size: 5.8mm; }
+.ahdr p  { color: #BDC3C7; font-size: 2.8mm; margin-top: 1.2mm; }
+.abdy    { padding: 8mm 16mm; }
+.atbl    { width: 100%; border-collapse: collapse; margin-bottom: 8mm; }
+.atbl th {
+  background: #34495E; color: #fff;
+  font-size: 3.2mm; padding: 2.8mm 3mm; text-align: center;
+}
+.atbl td {
+  font-size: 3.6mm; padding: 2.8mm 3mm; text-align: center;
+  border-bottom: 0.2mm solid #DEE2E6;
+}
+.atbl tr:nth-child(even) td { background: #F8F9FA; }
+.anotes h3 { color: #5D6D7E; font-size: 3.2mm; margin-bottom: 2mm; }
+.anotes p  { color: #7F8C8D; font-size: 2.8mm; line-height: 2.2; }
+</style>
+</head><body>
+<div class="page"><div class="cut-line"></div>
+<div class="map-card map-top"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-01</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ</div></div>
+<div style="font-size:18px;line-height:2.2;">
+<div class="step"><span class="sn">1.</span> みぎをむく</div>
+<div class="step"><span class="sn">2.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">3.</span> ひだりをむく</div>
+<div class="step"><span class="sn">4.</span> 2マスすすむ</div>
+<div class="step"><span class="sn">5.</span> みぎをむく</div>
+<div class="step"><span class="sn">6.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">7.</span> たからばこをひらく</div>
+</div>
+</div>
+<div class="bdeco"><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdc"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span></div></div>
+<div class="map-card map-bottom"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-02</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ</div></div>
+<div style="font-size:18px;line-height:2.2;">
+<div class="step"><span class="sn">1.</span> みぎをむく</div>
+<div class="step"><span class="sn">2.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">3.</span> ひだりをむく</div>
+<div class="step"><span class="sn">4.</span> 3マスすすむ</div>
+<div class="step"><span class="sn">5.</span> たからばこをひらく</div>
+</div>
+</div>
+<div class="bdeco"><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdc"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span></div></div>
+</div>
+<div class="page"><div class="cut-line"></div>
+<div class="map-card map-top"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-03</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ</div></div>
+<div style="font-size:16px;line-height:1.9;">
+<div class="step"><span class="sn">1.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">2.</span> ひだりをむく</div>
+<div class="step"><span class="sn">3.</span> [くりかえしおわり]までを4回くりかえす</div>
+<div class="step si1"><span class="sn">4.</span> 1マスすすむ</div>
+<div class="step si1"><span class="sn">5.</span> みぎをむく</div>
+<div class="step si1"><span class="sn">6.</span> もしマスのすうじが1以上ならうしろをむく</div>
+<div class="step"><span class="sn">7.</span> くりかえしおわり</div>
+<div class="step"><span class="sn">8.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">9.</span> たからばこをひらく</div>
+</div>
+</div>
+<div class="bdeco"><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdc"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span></div></div>
+<div class="map-card map-bottom"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-04</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ</div></div>
+<div style="font-size:16px;line-height:1.9;">
+<div class="step"><span class="sn">1.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">2.</span> みぎをむく</div>
+<div class="step"><span class="sn">3.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">4.</span> [くりかえしおわり]までを3回くりかえす</div>
+<div class="step si1"><span class="sn">5.</span> ひだりをむく</div>
+<div class="step si1"><span class="sn">6.</span> 1マスすすむ</div>
+<div class="step si1"><span class="sn">7.</span> もしマスのすうじが2以上ならうしろをむく</div>
+<div class="step"><span class="sn">8.</span> くりかえしおわり</div>
+<div class="step"><span class="sn">9.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">10.</span> たからばこをひらく</div>
+</div>
+</div>
+<div class="bdeco"><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdc"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span></div></div>
+</div>
+<div class="page"><div class="cut-line"></div>
+<div class="map-card map-top"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-05</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ</div></div>
+<div style="font-size:18px;line-height:2.2;">
+<div class="step"><span class="sn">1.</span> [くりかえしおわり]までを3回くりかえす</div>
+<div class="step si1"><span class="sn">2.</span> 2マスすすむ</div>
+<div class="step si1"><span class="sn">3.</span> もしマスのすうじが2以上ならひだりをむく、そうでなければみぎをむく</div>
+<div class="step"><span class="sn">4.</span> くりかえしおわり</div>
+<div class="step"><span class="sn">5.</span> たからばこをひらく</div>
+</div>
+</div>
+<div class="bdeco"><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdc"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span></div></div>
+<div class="map-card map-bottom"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-06</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span><span>★</span><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ<br>「[マスのすうじ]のポイントをゲット」をつかうとポイントがたまるよ</div></div>
+<div style="font-size:14px;line-height:1.75;">
+<div class="step"><span class="sn">1.</span> みぎをむく</div>
+<div class="step"><span class="sn">2.</span> 2マスすすむ</div>
+<div class="step"><span class="sn">3.</span> [マスのすうじ]のポイントをゲット</div>
+<div class="step"><span class="sn">4.</span> [くりかえしおわり]までを[マスのすうじ]の回数くりかえす</div>
+<div class="step si1"><span class="sn">5.</span> 1マスすすむ</div>
+<div class="step si1"><span class="sn">6.</span> [マスのすうじ]のポイントをゲット</div>
+<div class="step si1"><span class="sn">7.</span> もしポイントが3以下ならひだりをむく</div>
+<div class="step si1"><span class="sn">8.</span> 1マスすすむ</div>
+<div class="step si1"><span class="sn">9.</span> もしポイントが5以上ならひだりをむく</div>
+<div class="step"><span class="sn">10.</span> くりかえしおわり</div>
+<div class="step"><span class="sn">11.</span> たからばこをひらく</div>
+</div>
+</div>
+<div class="bdeco"><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdc"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span></div></div>
+</div>
+<div class="page"><div class="cut-line"></div>
+<div class="map-card map-top"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-07</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span><span>★</span><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ<br>「[マスのすうじ]のポイントをゲット」をつかうとポイントがたまるよ</div></div>
+<div style="font-size:14px;line-height:1.75;">
+<div class="step"><span class="sn">1.</span> 2マスすすむ</div>
+<div class="step"><span class="sn">2.</span> [マスのすうじ]のポイントをゲット</div>
+<div class="step"><span class="sn">3.</span> [くりかえしおわり]までを、いまの[ポイント]回くりかえす</div>
+<div class="step si1"><span class="sn">4.</span> もしポイントがちょうど2なら2マスすすむ</div>
+<div class="step si1"><span class="sn">5.</span> もしマスのすうじが4なら1マスすすむ</div>
+<div class="step si1"><span class="sn">6.</span> もしポイントが2以上ならみぎをむく</div>
+<div class="step si1"><span class="sn">7.</span> 1マスすすむ</div>
+<div class="step si1"><span class="sn">8.</span> [マスのすうじ]のポイントをゲット</div>
+<div class="step"><span class="sn">9.</span> くりかえしおわり</div>
+<div class="step"><span class="sn">10.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">11.</span> たからばこをひらく</div>
+</div>
+</div>
+<div class="bdeco"><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdc"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span></div></div>
+<div class="map-card map-bottom"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-08</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ<br>「[マスのすうじ]のポイントをゲット」をつかうとポイントがたまるよ</div></div>
+<div style="font-size:14px;line-height:1.75;">
+<div class="step"><span class="sn">1.</span> [くりかえしおわり1]までを3回くりかえす</div>
+<div class="step si1"><span class="sn">2.</span> [くりかえしおわり2]までを2回くりかえす</div>
+<div class="step si2"><span class="sn">3.</span> 1マスすすむ</div>
+<div class="step si2"><span class="sn">4.</span> もしマスのすうじが2以上なら[マスのすうじ]のポイントをゲット</div>
+<div class="step si2"><span class="sn">5.</span> もしポイントが3以上ならみぎをむく</div>
+<div class="step si1"><span class="sn">6.</span> くりかえしおわり2</div>
+<div class="step si1"><span class="sn">7.</span> [マスのすうじ]のポイントをゲット</div>
+<div class="step"><span class="sn">8.</span> くりかえしおわり1</div>
+<div class="step"><span class="sn">9.</span> もしポイントが5以上ならみぎをむく</div>
+<div class="step"><span class="sn">10.</span> 2マスすすむ</div>
+<div class="step"><span class="sn">11.</span> たからばこをひらく</div>
+</div>
+</div>
+<div class="bdeco"><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdc"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span></div></div>
+</div>
+<div class="page"><div class="cut-line"></div>
+<div class="map-card map-top"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-09</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ<br>「[マスのすうじ]のポイントをゲット」をつかうとポイントがたまるよ<br>「〜のあいだくりかえす」は条件を満たすあいだ、くりかえし実行する</div></div>
+<div style="font-size:16px;line-height:1.9;">
+<div class="step"><span class="sn">1.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">2.</span> [くりかえしおわり]までを「ポイントが5未満のあいだ」くりかえす</div>
+<div class="step si1"><span class="sn">3.</span> 1マスすすむ</div>
+<div class="step si1"><span class="sn">4.</span> もしポイントが奇数ならひだりをむく、そうでなければみぎをむく</div>
+<div class="step si1"><span class="sn">5.</span> [マスのすうじ]のポイントをゲット</div>
+<div class="step"><span class="sn">6.</span> くりかえしおわり</div>
+<div class="step"><span class="sn">7.</span> もしポイントが6以上ならひだりをむく</div>
+<div class="step"><span class="sn">8.</span> 2マスすすむ</div>
+<div class="step"><span class="sn">9.</span> たからばこをひらく</div>
+</div>
+</div>
+<div class="bdeco"><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdc"></span><span class="bdd bds"></span><span class="bdd"></span><span class="bdd bds"></span><span class="bdd"></span></div></div>
+<div class="map-card map-bottom"><div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-10</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ<br>「[マスのすうじ]のポイントをゲット」をつかうとポイントがたまるよ<br>「〜のあいだくりかえす」は条件を満たすあいだ、くりかえし実行する</div></div>
+<table class="tc" style="font-size:13px;line-height:1.75;"><tr><td>
+<div class="step"><span class="sn">1.</span> [くりかえしおわり1]までを「ポイントが5未満のあいだ」くりかえす</div>
+<div class="step si1"><span class="sn">2.</span> もしポイントが4以上なら、うしろをむく</div>
+<div class="step si1"><span class="sn">3.</span> 1マスすすむ</div>
+<div class="step si1"><span class="sn">4.</span> [くりかえしおわり2]までを2回くりかえす</div>
+<div class="step si2"><span class="sn">5.</span> もしポイントが4以上ならみぎをむく、そうでなければひだりをむく</div>
+<div class="step si2"><span class="sn">6.</span> もしマスのすうじが2なら、うしろをむく</div>
+<div class="step si2"><span class="sn">7.</span> [くりかえしおわり3]までを2回くりかえす</div>
+<div class="step si3"><span class="sn">8.</span> もしポイントが2以上なら、ひだりをむく</div>
+<div class="step si3"><span class="sn">9.</span> 1マスすすむ</div>
+<div class="step si2"><span class="sn">10.</span> くりかえしおわり3</div>
+<div class="step si1"><span class="sn">11.</span> くりかえしおわり2</div>
+<div class="step si1"><span class="sn">12.</span> もしポイントが2以上なら、1マスすすむ</div>
+<div class="step si1"><span class="sn">13.</span> [マスのすうじ]のポイントをゲット</div>
+<div class="step"><span class="sn">14.</span> くりかえしおわり1</div>
+</td><td>
+<div class="step"><span class="sn">15.</span> うしろをむく</div>
+<div class="step"><span class="sn">16.</span> 1マスすすむ</div>
+<div class="step"><span class="sn">17.</span> たからばこをひらく</div>
+</td></tr></table>
+</div></div>
+</div>
+<div class="page">
+<div class="map-full">
+<div class="pbg"></div><div class="pe-t"></div><div class="pe-b"></div><div class="pe-l"></div><div class="pe-r"></div>
+<div class="bo"></div><div class="bi"></div>
+<div class="cd cd-tl"></div><div class="cd cd-tr"></div><div class="cd cd-bl"></div><div class="cd cd-br"></div>
+<div class="ct">
+<div class="compass"><svg viewBox="0 0 60 60" width="78" height="88"><line x1="30" y1="6" x2="30" y2="54" stroke="#7D4E37" stroke-width="1.5"/><line x1="6" y1="30" x2="54" y2="30" stroke="#7D4E37" stroke-width="1.2"/><polygon points="30,6 27,22 33,22" fill="#7D4E37"/><line x1="18" y1="18" x2="42" y2="42" stroke="#7D4E37" stroke-width="0.7"/><line x1="42" y1="18" x2="18" y2="42" stroke="#7D4E37" stroke-width="0.7"/><circle cx="30" cy="30" r="3" fill="#C5940A"/><circle cx="30" cy="30" r="1.5" fill="#F5E6C8"/><text x="30" y="4" text-anchor="middle" fill="#5B2E1A" font-size="7" font-weight="bold">N</text></svg></div><div class="mno"><span class="mno-l">No.</span><span class="mno-v">R-11</span></div><div class="bw"><div class="bn"><div class="blt"></div>たからのちず<div class="blb"></div></div></div><div class="subtitle">ロジックたからさがし</div><div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div><div class="dv"><div class="dvl"></div><div class="dvd"></div><div class="dvr"></div></div><div class="sh">▶ おたからまでのみちすじ</div>
+<div class="srb"><div class="srh">【とくべつルール】</div><div class="srt">すうじマスではないところでは、[マスのすうじ]は0とするよ<br>コードを上から順に読んで、ロボットのうごきを追いかけよう</div></div>
+<div class="code-block"><span class="code-label">Python</span><pre><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># main.py</span>
+<span class="linenos"> 2</span><span class="k">def</span><span class="w"> </span><span class="nf">move</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">facing</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+<span class="linenos"> 3</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;現在の向きにstepsマスすすみ、新しい(row, col)を返す&quot;&quot;&quot;</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">def</span><span class="w"> </span><span class="nf">turn</span><span class="p">(</span><span class="n">facing</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+<span class="linenos"> 6</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;direction（みぎ/ひだり/後ろ）に向きを変え、新しいfacingを返す&quot;&quot;&quot;</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="k">def</span><span class="w"> </span><span class="nf">cell_number</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+<span class="linenos"> 9</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;そのマスに書かれたすうじを返す（なければ0）&quot;&quot;&quot;</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="k">def</span><span class="w"> </span><span class="nf">open_treasure</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
+<span class="linenos">12</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;そのマスのたからばこをひらく&quot;&quot;&quot;</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="c1"># 初期状態</span>
+<span class="linenos">15</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span>
+<span class="linenos">16</span><span class="n">facing</span> <span class="o">=</span> <span class="s2">&quot;窓の方向&quot;</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">move</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">facing</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">19</span><span class="n">facing</span> <span class="o">=</span> <span class="n">turn</span><span class="p">(</span><span class="n">facing</span><span class="p">,</span> <span class="s2">&quot;みぎ&quot;</span><span class="p">)</span>
+<span class="linenos">20</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">move</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">facing</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+<span class="linenos">23</span>    <span class="n">facing</span> <span class="o">=</span> <span class="n">turn</span><span class="p">(</span><span class="n">facing</span><span class="p">,</span> <span class="s2">&quot;ひだり&quot;</span><span class="p">)</span>
+<span class="linenos">24</span>    <span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">move</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">facing</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">25</span>    <span class="k">if</span> <span class="n">cell_number</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+<span class="linenos">26</span>        <span class="n">facing</span> <span class="o">=</span> <span class="n">turn</span><span class="p">(</span><span class="n">facing</span><span class="p">,</span> <span class="s2">&quot;後ろ&quot;</span><span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="n">move</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">facing</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">29</span><span class="n">open_treasure</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+</pre></div>
+</pre></div>
+</div></div></div>
+<div class="page"><div class="ahdr"><h1>◆ ロジックたからさがし ─ 正誤表（運営用）</h1><p>※ このシートは参加者には見せないでください</p></div><div class="abdy"><table class="atbl"><thead><tr><th>No.</th><th>なんいど</th><th>正解のたからばこ</th><th>メモ</th></tr></thead><tbody><tr><td>R-01</td><td>★</td><td>宝箱 F</td><td></td></tr><tr><td>R-02</td><td>★</td><td>宝箱 D</td><td></td></tr><tr><td>R-03</td><td>★★</td><td>宝箱 D</td><td></td></tr><tr><td>R-04</td><td>★★</td><td>宝箱 C</td><td></td></tr><tr><td>R-05</td><td>★★</td><td>宝箱 B</td><td></td></tr><tr><td>R-06</td><td>★★★</td><td>宝箱 D</td><td></td></tr><tr><td>R-07</td><td>★★★</td><td>宝箱 F</td><td></td></tr><tr><td>R-08</td><td>★★★★</td><td>宝箱 F</td><td></td></tr><tr><td>R-09</td><td>★★★★</td><td>宝箱 C</td><td></td></tr><tr><td>R-10</td><td>★★★★★</td><td>宝箱 E</td><td></td></tr><tr><td>R-11</td><td>★★★★★</td><td>宝箱 C</td><td>Python コード形式</td></tr></tbody></table><div class="anotes"><h3>【運営メモ】</h3><p>・参加者が「たからばこをひらく」を実行して得たお宝を、地図のNo.と照合して正解かどうか判定してください。<br>・難しすぎる/簡単すぎると思ったら問題の変更OK<br>・景品は参加者全員に渡してください<br>・間違えた場合はやりなおし(混雑時除く) & 適宜ヒントを出してもOK。</p></div></div></div>
+</body></html>
