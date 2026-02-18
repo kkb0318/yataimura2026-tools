@@ -1,3 +1,6 @@
+import argparse
+import math
+
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.units import mm
@@ -6,6 +9,7 @@ from reportlab.pdfbase.cidfonts import UnicodeCIDFont
 from reportlab.pdfgen import canvas
 
 OUT = "takarabako_flyer_kids_4up_landscape_final.pdf"
+PANELS_PER_PAGE = 4
 
 pdfmetrics.registerFont(UnicodeCIDFont("HeiseiKakuGo-W5"))
 FONT = "HeiseiKakuGo-W5"
@@ -128,7 +132,7 @@ def draw_action_card(c, x, y, w, h, with_phone):
     c.drawCentredString(x + w / 2, y + 5.5 * mm, sub_line)
 
 
-def draw_panel(c, x, y, w, h):
+def draw_panel(c, x, y, w, h, no_text):
     side_pad = 3 * mm
     top_pad = 3 * mm
     bottom_pad = 3 * mm
@@ -149,6 +153,11 @@ def draw_panel(c, x, y, w, h):
     c.setFillColor(colors.white)
     c.setFont(FONT, 24)
     c.drawString(banner_x + 28 * mm, banner_y + 4.5 * mm, "たからばこ")
+    c.setFillColor(colors.HexColor("#B9D5D8"))
+    c.setFont(FONT, 9)
+    c.drawRightString(
+        banner_x + banner_w - 3.0 * mm, banner_y + 6.2 * mm, f"No.{no_text}"
+    )
 
     cards_gap = 5 * mm
     cards_top = banner_y - 3.5 * mm
@@ -167,32 +176,99 @@ def draw_panel(c, x, y, w, h):
     )
 
 
-def main():
-    pw, ph = landscape(A4)
-    c = canvas.Canvas(OUT, pagesize=(pw, ph))
-    c.setFillColor(colors.HexColor("#E6E6E6"))
-    c.rect(0, 0, pw, ph, fill=1, stroke=0)
+def build_alpha_labels(count):
+    labels = []
+    for i in range(count):
+        n = i
+        name = ""
+        while True:
+            n, r = divmod(n, 26)
+            name = chr(ord("A") + r) + name
+            if n == 0:
+                break
+            n -= 1
+        labels.append(name)
+    return labels
 
-    cell_w = pw / 2
-    cell_h = ph / 2
 
-    margin = 4 * mm
-    for row in range(2):
-        for col in range(2):
-            x = col * cell_w + margin / 2
-            y = row * cell_h + margin / 2
-            w = cell_w - margin
-            h = cell_h - margin
-            draw_panel(c, x, y, w, h)
+def resolve_labels(count, labels_arg):
+    if labels_arg:
+        labels = [item.strip() for item in labels_arg.split(",") if item.strip()]
+        if not labels:
+            raise ValueError("--labels が空です。例: --labels A,B,C")
+        return labels
 
+    if count <= 0:
+        raise ValueError("--count は 1 以上を指定してください")
+    return build_alpha_labels(count)
+
+
+def panel_position(index, cell_w, cell_h, margin):
+    layout = [
+        (0, 1),  # left-top
+        (1, 1),  # right-top
+        (0, 0),  # left-bottom
+        (1, 0),  # right-bottom
+    ]
+    col, row = layout[index]
+    x = col * cell_w + margin / 2
+    y = row * cell_h + margin / 2
+    w = cell_w - margin
+    h = cell_h - margin
+    return x, y, w, h
+
+
+def draw_guides(c, pw, ph):
     c.setStrokeColor(colors.HexColor("#B7B7B7"))
     c.setLineWidth(0.5)
     c.line(pw / 2, 0, pw / 2, ph)
     c.line(0, ph / 2, pw, ph / 2)
 
-    c.showPage()
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Generate treasure-box flyer PDF")
+    parser.add_argument(
+        "--count",
+        type=int,
+        default=PANELS_PER_PAGE,
+        help="生成する配布資料の数（--labels 未指定時に使用）",
+    )
+    parser.add_argument(
+        "--labels",
+        type=str,
+        default="A,B,C,D,E,F,G",
+        help="No の一覧（カンマ区切り）。例: A,B,C",
+    )
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    labels = resolve_labels(args.count, args.labels)
+
+    pw, ph = landscape(A4)
+    c = canvas.Canvas(OUT, pagesize=(pw, ph))
+    cell_w = pw / 2
+    cell_h = ph / 2
+    margin = 4 * mm
+    pages = math.ceil(len(labels) / PANELS_PER_PAGE)
+
+    for page in range(pages):
+        c.setFillColor(colors.HexColor("#E6E6E6"))
+        c.rect(0, 0, pw, ph, fill=1, stroke=0)
+
+        start = page * PANELS_PER_PAGE
+        end = min(start + PANELS_PER_PAGE, len(labels))
+
+        for offset, label in enumerate(labels[start:end]):
+            x, y, w, h = panel_position(offset, cell_w, cell_h, margin)
+            draw_panel(c, x, y, w, h, label)
+
+        draw_guides(c, pw, ph)
+        c.showPage()
+
     c.save()
-    print("Wrote:", OUT)
+    print(f"Wrote: {OUT} (items={len(labels)}, pages={pages})")
 
 
 if __name__ == "__main__":

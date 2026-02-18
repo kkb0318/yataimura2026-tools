@@ -29,20 +29,23 @@ uv sync
 uv run python main.py
 ```
 
-生成されるファイル:
-
-- `/Users/kkb/ghq/github.com/kkb0318/yataimura2026-tools/treasure-box-flyer/takarabako_flyer_kids_4up_landscape_final.pdf`
-
-## 代替実行方法（uv を使わない場合）
+`--count` を指定すると、`A, B, C, ...` を自動採番してその数だけ生成します。
 
 ```bash
-cd /Users/kkb/ghq/github.com/kkb0318/yataimura2026-tools/treasure-box-flyer
-python3 -m venv .venv
-.venv/bin/pip install reportlab
-.venv/bin/python main.py
+uv run python main.py --count 10
 ```
 
-## デザインを調整する場所
+`--labels` を指定すると、No を明示指定できます（指定した件数だけ生成）。
 
-- レイアウト・配色・文言: `/Users/kkb/ghq/github.com/kkb0318/yataimura2026-tools/treasure-box-flyer/main.py`
-- 出力ファイル名: `/Users/kkb/ghq/github.com/kkb0318/yataimura2026-tools/treasure-box-flyer/main.py` の `OUT`
+```bash
+uv run python main.py --labels A,B,C,D,E
+```
+
+補足:
+
+- 各配布資料の右上に `No.<添え字>`（例: `No.A`）を表示します
+- 1ページに4面配置し、件数が5以上なら自動で複数ページになります
+
+生成されるファイル:
+
+- `yataimura2026-tools/treasure-box-flyer/takarabako_flyer_kids_4up_landscape_final.pdf`
