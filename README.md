@@ -58,6 +58,13 @@
 - 出力: `programming_world_poster.pdf`
 - 補足: 日本語フォント（IPAゴシック）が必要。見つからない場合は IPAexゴシックを自動ダウンロード
 
+### `human-robot-cards-list`
+- 目的: 人間ロボットゲームの全カード一覧（青・黄・赤 計55枚）をA4一枚のPDFに出力
+- 実行: `cd human-robot-cards-list && uv run gen_cards.py`
+- オプション: 引数で出力ファイルパスを指定可（デフォルト `card_list.pdf`）
+- 出力: `card_list.pdf`
+- 補足: 日本語フォント（Noto Sans CJK JP 推奨）が必要
+
 ### `logic-treasure-mission-card`
 - 目的: 人間ロボットゲームのミッションカード（参加者用）と運営用解答集を生成
 - 実行: `cd logic-treasure-mission-card && uv run generate.py`
